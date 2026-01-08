@@ -36,11 +36,10 @@ class OpenAIProvider(AIProvider):
     """OpenAI GPT provider implementation"""
 
     def __init__(self):
-        # Use environment variable approach for better compatibility
-        import os
-        if not os.environ.get("OPENAI_API_KEY") and settings.openai_api_key:
-            os.environ["OPENAI_API_KEY"] = settings.openai_api_key
-
+        # Use new OpenAI client (v1.0.0+)
+        from openai import OpenAI
+        self.client = OpenAI(api_key=settings.openai_api_key)
+        
         # Use ai_model if specified, otherwise use provider default
         self.model = settings.ai_model if settings.ai_model and settings.ai_provider == "openai" else settings.openai_model
         self.max_tokens = settings.openai_max_tokens
@@ -64,7 +63,7 @@ class OpenAIProvider(AIProvider):
         )
 
         try:
-            response = openai.ChatCompletion.create(
+            response = self.client.chat.completions.create(
                 model=self.model,
                 messages=[
                     {
