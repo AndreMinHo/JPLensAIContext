@@ -86,8 +86,12 @@ class OpenAIProvider(AIProvider):
             return {
                 "error": f"OpenAI analysis failed: {str(e)}",
                 "natural_translation": literal_translation,
-                "cultural_notes": [],
-                "additional_insights": []
+                "cultural_note": f"Error: {str(e)}",
+                "insight": f"Error: {str(e)}",
+                "usage_example": {
+                    "example_japanese": f"Error: {str(e)}",
+                    "example_english": f"Error: {str(e)}"
+                }
             }
 
     def _build_analysis_prompt(
@@ -98,42 +102,24 @@ class OpenAIProvider(AIProvider):
     ) -> str:
 
         return f"""
-Please analyze this Japanese text and provide deeper contextual understanding:
+Please analyze this Japanese text and provide a concise contextual understanding:
 
 JAPANESE TEXT: "{japanese_text}"
 LITERAL TRANSLATION: "{literal_translation}"
-DETECTED FORMALITY: {formality_level}
 
 IMPORTANT: Respond ONLY with valid JSON. Do not include any markdown formatting, code blocks, or explanatory text. Just the raw JSON object.
 
 {{
   "natural_translation": "A more natural, contextual English translation",
-  "cultural_notes": [
-    {{
-      "category": "etiquette/social norms/tradition/etc",
-      "note": "Detailed explanation of cultural context",
-      "relevance": "Why this matters for understanding the text"
-    }}
-  ],
-  "tone_analysis": "Analysis of the emotional tone and speaker intent",
-  "usage_examples": [
-    {{
-      "situation": "Context where similar language would be used",
-      "example_japanese": "Example Japanese text",
-      "example_english": "English translation",
-      "formality_level": "Formality of the example"
-    }}
-  ],
-  "additional_insights": [
-    "Any other relevant observations about the text"
-  ]
+  "cultural_note": "One key cultural insight about this text",
+  "insight": "One additional relevant observation",
+  "usage_example": {{
+    "example_japanese": "Example Japanese text showing similar usage",
+    "example_english": "English translation of the example"
+  }}
 }}
 
-Focus on:
-- More natural translations that capture nuance
-- Cultural context that might not be obvious
-- Social implications and politeness levels
-- Common usage patterns and situations
+Keep each field concise and focused on the most important insight.
 """
 
     def _parse_ai_response(self, ai_response: str) -> Dict[str, Any]:
@@ -180,10 +166,12 @@ Focus on:
         # Fallback: extract basic information
         return {
             "natural_translation": ai_response.split('\n')[0] if ai_response else "Analysis failed",
-            "cultural_notes": [],
-            "tone_analysis": "Unable to parse AI response",
-            "usage_examples": [],
-            "additional_insights": [ai_response]
+            "cultural_note": "Unable to parse AI response",
+            "insight": "Unable to parse AI response",
+            "usage_example": {
+                "example_japanese": "Unable to parse AI response",
+                "example_english": "Unable to parse AI response"
+            }
         }
 
 
@@ -235,8 +223,12 @@ class ClaudeProvider(AIProvider):
             return {
                 "error": f"Claude analysis failed: {str(e)}",
                 "natural_translation": literal_translation,
-                "cultural_notes": [],
-                "additional_insights": []
+                "cultural_note": f"Error: {str(e)}",
+                "insight": f"Error: {str(e)}",
+                "usage_example": {
+                    "example_japanese": f"Error: {str(e)}",
+                    "example_english": f"Error: {str(e)}"
+                }
             }
 
     def _build_analysis_prompt(
@@ -247,42 +239,24 @@ class ClaudeProvider(AIProvider):
     ) -> str:
 
         return f"""
-Please analyze this Japanese text and provide deeper contextual understanding:
+Please analyze this Japanese text and provide a concise contextual understanding:
 
 JAPANESE TEXT: "{japanese_text}"
 LITERAL TRANSLATION: "{literal_translation}"
-DETECTED FORMALITY: {formality_level}
 
 IMPORTANT: Respond ONLY with valid JSON. Do not include any markdown formatting, code blocks, or explanatory text. Just the raw JSON object.
 
 {{
   "natural_translation": "A more natural, contextual English translation",
-  "cultural_notes": [
-    {{
-      "category": "etiquette/social norms/tradition/etc",
-      "note": "Detailed explanation of cultural context",
-      "relevance": "Why this matters for understanding the text"
-    }}
-  ],
-  "tone_analysis": "Analysis of the emotional tone and speaker intent",
-  "usage_examples": [
-    {{
-      "situation": "Context where similar language would be used",
-      "example_japanese": "Example Japanese text",
-      "example_english": "English translation",
-      "formality_level": "Formality of the example"
-    }}
-  ],
-  "additional_insights": [
-    "Any other relevant observations about the text"
-  ]
+  "cultural_note": "One key cultural insight about this text",
+  "insight": "One additional relevant observation",
+  "usage_example": {{
+    "example_japanese": "Example Japanese text showing similar usage",
+    "example_english": "English translation of the example"
+  }}
 }}
 
-Focus on:
-- More natural translations that capture nuance
-- Cultural context that might not be obvious
-- Social implications and politeness levels
-- Common usage patterns and situations
+Keep each field concise and focused on the most important insight.
 """
 
     def _parse_ai_response(self, ai_response: str) -> Dict[str, Any]:
@@ -316,10 +290,12 @@ Focus on:
         # Fallback: extract basic information
         return {
             "natural_translation": ai_response.split('\n')[0] if ai_response else "Analysis failed",
-            "cultural_notes": [],
-            "tone_analysis": "Unable to parse AI response",
-            "usage_examples": [],
-            "additional_insights": [ai_response]
+            "cultural_note": "Unable to parse AI response",
+            "insight": "Unable to parse AI response",
+            "usage_example": {
+                "example_japanese": "Unable to parse AI response",
+                "example_english": "Unable to parse AI response"
+            }
         }
 
 

@@ -43,7 +43,7 @@ class ContextAnalyzer:
             formality_level=formality_level
         )
 
-        # Structure the complete response
+        # Structure the complete response using simplified AI analysis
         return {
             "original_text": japanese_text,
             "basic_translation": {
@@ -52,10 +52,9 @@ class ContextAnalyzer:
             },
             "ai_enhanced_analysis": {
                 "natural_translation": ai_analysis.get("natural_translation", literal_translation),
-                "tone_analysis": ai_analysis.get("tone_analysis", ""),
-                "cultural_notes": ai_analysis.get("cultural_notes", []) if include_cultural_notes else [],
-                "usage_examples": ai_analysis.get("usage_examples", []) if include_examples else [],
-                "additional_insights": ai_analysis.get("additional_insights", [])
+                "cultural_note": ai_analysis.get("cultural_note", "") if include_cultural_notes else "",
+                "insight": ai_analysis.get("insight", ""),
+                "usage_example": ai_analysis.get("usage_example", {"example_japanese": "", "example_english": ""}) if include_examples else {"example_japanese": "", "example_english": ""}
             },
             "metadata": {
                 "analysis_timestamp": self._get_timestamp(),
