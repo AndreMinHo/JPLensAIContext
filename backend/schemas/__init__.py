@@ -29,10 +29,23 @@ class JPLensSimpleTranslation(BaseModel):
     raw_text: str = Field(..., description="Raw Japanese text")
     literal: str = Field(..., description="Literal/direct translation")
 
+class JPLensFullTranslation(BaseModel):
+    """Full translation section from JPLensContext API with nested structure"""
+    raw_text: str = Field(..., description="Raw Japanese text")
+    detected_language: Optional[str] = Field(None, description="Detected language code")
+    translation: JPLensTranslation = Field(..., description="Translation object with literal and natural")
+    context: JPLensContext = Field(..., description="Context information")
+    ambiguity: JPLensAmbiguity = Field(..., description="Ambiguity information")
+
 class JPLensSimpleResponse(BaseModel):
     """Simplified response from JPLensContext API - only OCR text and basic translation"""
     ocr: Dict[str, Any] = Field(..., description="OCR results")
     translation: JPLensSimpleTranslation = Field(..., description="Simplified translation section")
+
+class JPLensFullResponse(BaseModel):
+    """Full response from JPLensContext API with complete structure"""
+    ocr: Dict[str, Any] = Field(..., description="OCR results")
+    translation: JPLensFullTranslation = Field(..., description="Full translation section")
 
 
 class UsageExample(BaseModel):

@@ -11,7 +11,8 @@ from backend.schemas import (
     AnalysisRequest,
     AnalysisResponse,
     ErrorResponse,
-    JPLensSimpleResponse
+    JPLensSimpleResponse,
+    JPLensFullResponse
 )
 from backend.config import settings
 
@@ -155,6 +156,61 @@ async def analyze_simple(
             "ambiguity": {
                 "is_ambiguous": False,
                 "possible_meanings": []
+            }
+        }
+
+        # Perform analysis with defaults
+        result = analyzer.analyze_full_context(
+            japanese_text=japanese_text,
+            translation_data=translation_data,
+            include_cultural_notes=True,
+            include_examples=True
+        )
+
+        return result
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(
+            status_code=500,
+            detail=f"Analysis failed: {str(e)}"
+        )
+
+
+@app.post("/analyze/full")
+async def analyze_full(
+    jplens_data: JPLensFullResponse,
+    analyzer: ContextAnalyzer = Depends(get_context_analyzer)
+) -> Dict[str, Any]:
+    """
+    Full analysis endpoint that accepts complete JPLensContext response.
+
+    This endpoint uses all available data from JPLensContext API including context and ambiguity info.
+    """
+    try:
+        # Extract Japanese text from OCR data
+        japanese_text = jplens_data.ocr.get("text", "")
+        if not japanese_text:
+            raise HTTPException(
+                status_code=400,
+                detail="No Japanese text found in OCR data"
+            )
+
+        # Use the full translation data structure from the API response
+        translation_data = {
+            "translation": {
+                "literal": jplens_data.translation.translation.literal,
+                "natural": jplens_data.translation.translation.natural or jplens_data.translation.translation.literal
+            },
+            "context": {
+                "usage": jplens_data.translation.context.usage,
+                "formality": jplens_data.translation.context.formality,
+                "cultural_notes": jplens_data.translation.context.cultural_notes
+            },
+            "ambiguity": {
+                "is_ambiguous": jplens_data.translation.ambiguity.is_ambiguous,
+                "possible_meanings": jplens_data.translation.ambiguity.possible_meanings
             }
         }
 

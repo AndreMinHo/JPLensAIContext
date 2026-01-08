@@ -88,6 +88,64 @@ def test_analyze_simple_endpoint():
             print(f"❌ Failed: {e}")
         return False
 
+def test_analyze_with_user_example():
+    """Test the analyze/full endpoint with user's provided JPLensContext response example"""
+    print("\n🧪 Testing analyze/full with user's JPLensContext response example...")
+
+    # User's provided JPLensContext API response example
+    user_example_data = {
+        "ocr": {
+            "text": "ご飯 定食",
+            "confidence": 0.9919165516812564
+        },
+        "translation": {
+            "raw_text": "ご飯 定食",
+            "detected_language": "ja",
+            "translation": {
+                "literal": "rice set meal",
+                "natural": "rice set meal"
+            },
+            "context": {
+                "usage": "general",
+                "formality": "formal",
+                "cultural_notes": []
+            },
+            "ambiguity": {
+                "is_ambiguous": False,
+                "possible_meanings": []
+            }
+        }
+    }
+
+    try:
+        response = requests.post(
+            f"{BASE_URL}/analyze/full",
+            json=user_example_data,
+            timeout=30
+        )
+        print(f"✅ Status: {response.status_code}")
+
+        if response.status_code == 200:
+            result = response.json()
+            print("📄 Analysis Result:")
+            print(f"   Original: {result.get('original_text', 'N/A')}")
+            print(f"   Natural: {result.get('ai_enhanced_analysis', {}).get('natural_translation', 'N/A')}")
+            print(f"   Cultural note: {result.get('ai_enhanced_analysis', {}).get('cultural_note', 'N/A')}")
+            print(f"   Insight: {result.get('ai_enhanced_analysis', {}).get('insight', 'N/A')}")
+            print("\n🔍 Full Response JSON:")
+            print(json.dumps(result, indent=2, ensure_ascii=False))
+            return True
+        else:
+            print(f"❌ Error response: {response.text}")
+            return False
+
+    except Exception as e:
+        if isinstance(e, requests.exceptions.Timeout):
+            print("❌ Request timed out - AI service may not be configured")
+        else:
+            print(f"❌ Failed: {e}")
+        return False
+
 def test_analyze_endpoint():
     """Test the main analyze endpoint"""
     print("\n🧪 Testing analyze endpoint...")
@@ -144,6 +202,7 @@ def main():
         test_health_endpoint,
         test_config_endpoint,
         test_analyze_simple_endpoint,
+        test_analyze_with_user_example,
         test_analyze_endpoint
     ]
 
