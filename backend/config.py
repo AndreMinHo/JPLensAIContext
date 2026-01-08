@@ -8,8 +8,9 @@ from pydantic_settings import BaseSettings
 class Settings(BaseSettings):
     """Application settings with environment variable support"""
 
-    # 🔑 REQUIRED: AI Provider Configuration
+    # 🔑 REQUIRED: AI Provider & Model Configuration
     ai_provider: str = "openai"  # "openai" or "claude"
+    ai_model: Optional[str] = None  # Specific model to use (recommended to specify)
 
     # 🔑 REQUIRED: API Keys (depending on provider)
     openai_api_key: Optional[str] = None
@@ -19,12 +20,12 @@ class Settings(BaseSettings):
     jplens_api_url: str = "http://localhost:8000"
     jplens_api_timeout: int = 30
 
-    # 🤖 AI Model Configuration (optimized defaults)
-    openai_model: str = "gpt-4"
+    # 🤖 AI Model Configuration (defaults if ai_model not specified)
+    openai_model: str = "gpt-3.5-turbo"  # Default OpenAI model
     openai_max_tokens: int = 1000
     openai_temperature: float = 0.3
 
-    claude_model: str = "claude-3-sonnet-20240229"
+    claude_model: str = "claude-3-haiku-20240307"  # Default Claude model
     claude_max_tokens: int = 1000
     claude_temperature: float = 0.3
 

@@ -35,10 +35,26 @@ cp .env.example .env
 ```
 
 ### 📋 **Configuration (Required)**
-Edit `.env` and set just **2 things**:
+Edit `.env` and set **3 things**:
 ```bash
 AI_PROVIDER=openai  # or "claude"
+AI_MODEL=gpt-4     # specific model (see examples below)
 OPENAI_API_KEY=sk-your-key-here  # or CLAUDE_API_KEY for Claude
+```
+
+### 🎛️ **Optional: Choose Your AI Model**
+You can use **any OpenAI or Claude model** you have access to:
+```bash
+# OpenAI Models (examples)
+OPENAI_MODEL=gpt-3.5-turbo    # Default, universally available
+OPENAI_MODEL=gpt-4           # Better analysis, requires access
+OPENAI_MODEL=gpt-4-turbo     # Fast & capable
+OPENAI_MODEL=gpt-4o          # Latest & greatest
+
+# Claude Models (examples)
+CLAUDE_MODEL=claude-3-haiku-20240307   # Default, fast & efficient
+CLAUDE_MODEL=claude-3-sonnet-20240229  # Balanced performance
+CLAUDE_MODEL=claude-3-opus-20240229    # Most capable
 ```
 
 Everything else uses optimized defaults for production use.

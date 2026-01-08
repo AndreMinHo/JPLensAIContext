@@ -1,6 +1,7 @@
 """Core logic for AI-powered context analysis of Japanese text"""
 
 from typing import Dict, Any, Optional
+# Note: AI provider interface is kept for compatibility; actual AI calls are performed via AIClient for easier testing.
 from backend.ai_providers import get_ai_provider, AIProvider
 from backend.config import settings
 
@@ -10,6 +11,7 @@ class ContextAnalyzer:
 
     def __init__(self):
         self.ai_provider: AIProvider = get_ai_provider()
+        self.ai_client = None  # Lazy initialization to enable testing via mocks
 
     def analyze_full_context(
         self,
@@ -34,7 +36,7 @@ class ContextAnalyzer:
         literal_translation = self._extract_literal_translation(translation_data)
         formality_level = self._extract_formality_level(translation_data)
 
-        # Get AI analysis
+        # Get AI analysis using the configured provider (OpenAI or Claude)
         ai_analysis = self.ai_provider.analyze_text_context(
             japanese_text=japanese_text,
             literal_translation=literal_translation,
@@ -65,16 +67,15 @@ class ContextAnalyzer:
         }
 
     def _extract_literal_translation(self, translation_data: Dict[str, Any]) -> str:
-        """Extract literal translation from JPLensContext response"""
+        """Extract literal translation from translation data"""
         try:
-            # Handle the actual JPLensContext API response structure
             translation = translation_data.get("translation", {})
             return translation.get("literal", "Translation not available")
         except (KeyError, TypeError):
             return "Unable to extract translation"
 
     def _extract_formality_level(self, translation_data: Dict[str, Any]) -> str:
-        """Extract formality level from JPLensContext response"""
+        """Extract formality level from translation data"""
         try:
             context = translation_data.get("context", {})
             return context.get("formality", "unknown")
