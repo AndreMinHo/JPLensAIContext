@@ -2,12 +2,12 @@
 
 ## Objective
 
-An AI-powered context analysis service that enhances Japanese text understanding by providing contextual and cultural analysis of Japanese text. Designed to be used with **[JPLENSCONTEXT API](https://github.com/Animenosekai/translate)**
+A bring-your-own-key AI-powered context analysis service that enhances Japanese text understanding by providing contextual and cultural analysis of Japanese text. Designed to be used with **[JPLENSCONTEXT API](https://github.com/Animenosekai/translate)**
 
 ## Features
 
-- Verifies if the literal translation is appropriate for the context
-- Provides cultural analysis of Japanese text
+- Offers a more natural translation of Japanese text
+- Provides cultural analysis of the text
 
 
 ## Architecture
@@ -38,57 +38,12 @@ cp .env.example .env
 Edit `.env` and set **3 things**:
 ```bash
 AI_PROVIDER=openai  # or "claude"
-AI_MODEL=gpt-4     # specific model (see examples below)
+AI_MODEL=gpt-4.1     # specific model (see examples below)
 OPENAI_API_KEY=sk-your-key-here  # or CLAUDE_API_KEY for Claude
 ```
 
-### 🎛️ **Optional: Choose Your AI Model**
-You can use **any OpenAI or Claude model** you have access to:
-```bash
-# OpenAI Models (examples)
-OPENAI_MODEL=gpt-3.5-turbo    # Default, universally available
-OPENAI_MODEL=gpt-4           # Better analysis, requires access
-OPENAI_MODEL=gpt-4-turbo     # Fast & capable
-OPENAI_MODEL=gpt-4o          # Latest & greatest
-
-# Claude Models (examples)
-CLAUDE_MODEL=claude-3-haiku-20240307   # Default, fast & efficient
-CLAUDE_MODEL=claude-3-sonnet-20240229  # Balanced performance
-CLAUDE_MODEL=claude-3-opus-20240229    # Most capable
-```
-
-Everything else uses optimized defaults for production use.
 
 ### 🧪 **Test Setup**
 ```bash
 python demo_ai_analysis.py
-```
-
-## 🔧 **Programmatic Usage**
-
-### **For Other Applications**
-```python
-from backend.context_analyzer import ContextAnalyzer
-
-# Initialize (reads from .env automatically)
-analyzer = ContextAnalyzer()
-
-# Analyze Japanese text with translation data
-result = analyzer.analyze_full_context(
-    japanese_text="こんにちは、お元気ですか？",
-    translation_data={
-        "translation": {"literal": "Hello, how are you?"},
-        "context": {"formality": "polite"}
-    }
-)
-
-print(result["ai_enhanced_analysis"]["natural_translation"])
-# Output: "Hey there, how are you doing?"
-```
-
-### **Environment Variables**
-Set these in your deployment environment:
-```bash
-AI_PROVIDER=openai  # or "claude"
-OPENAI_API_KEY=your-key  # or CLAUDE_API_KEY
 ```
