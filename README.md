@@ -35,7 +35,13 @@ JPLensContext API (OCR + Translation)
 
 ## Quick Start
 
-### 🚀 **Setup**
+1. **Set up virtual environment:**
+```bash
+py -3.12 -m venv .venv
+.venv\Scripts\activate
+```
+
+#### Install Dependencies
 ```bash
 git clone <repository-url>
 cd JPLensAIContext
