@@ -6,6 +6,4 @@ healthcheckPath = "/health"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
-
-[variables]
-PORT = "8001"
+port = 8001
