@@ -1,5 +1,6 @@
 """FastAPI application for JPLensAIContext - AI-powered Japanese text analysis"""
 
+import os
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
@@ -246,9 +247,11 @@ async def get_config() -> Dict[str, Any]:
 
 
 if __name__ == "__main__":
+    # Use 0.0.0.0 for production/Railway deployment
+    host = "0.0.0.0" if os.getenv("RAILWAY_ENVIRONMENT") or os.getenv("PORT") else settings.host
     uvicorn.run(
         "main:app",
-        host=settings.host,
+        host=host,
         port=settings.port,
         reload=settings.debug
     )

@@ -1,0 +1,50 @@
+# Development files
+__pycache__/
+.pytest_cache/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+.coverage
+.pytest_cache/
+.cache
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Git
+.git/
+.gitignore
+
+# Documentation
+docs/
+*.md
+
+# Test files
+tests/
+test_*.py
+*_test.py
+
+# Development requirements
+requirements.txt
+
+# Other files not needed in production
+.env
+.env.example
+debug_*.py
+demo_*.py
+extract_*.py
+quick_test.py
+setup.py

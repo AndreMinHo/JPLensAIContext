@@ -35,7 +35,7 @@ class Settings(BaseSettings):
 
     # 🖥️ Server Configuration (local development defaults)
     host: str = "127.0.0.1"
-    port: int = 8001
+    port: int = int(os.getenv("PORT", 8001))  # Railway provides PORT env var
 
     class Config:
         env_file = ".env"

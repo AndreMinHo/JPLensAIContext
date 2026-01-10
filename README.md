@@ -45,7 +45,8 @@ py -3.12 -m venv .venv
 ```bash
 git clone <repository-url>
 cd JPLensAIContext
-pip install -r requirements.txt
+pip install -r requirements.txt  # Development dependencies
+# OR for production: pip install -r requirements-prod.txt
 cp .env.example .env
 ```
 
@@ -67,6 +68,48 @@ The API will be available at `http://localhost:8001`
 ### 📖 **API Documentation**
 - **Interactive API docs**: http://localhost:8001/docs
 - **Alternative docs**: http://localhost:8001/redoc
+
+## 🚀 **Deployment**
+
+### Railway (Docker)
+
+1. **Connect to Railway:**
+   - Create a new project on [Railway.app](https://railway.app)
+   - Connect your GitHub repository
+
+2. **Set Environment Variables:**
+   In your Railway project settings, add these environment variables:
+   - `AI_PROVIDER`: `openai` or `claude`
+   - `AI_MODEL`: Your preferred model (e.g., `gpt-4`, `claude-3-sonnet-20240229`)
+   - `OPENAI_API_KEY`: Your OpenAI API key (if using OpenAI)
+   - `CLAUDE_API_KEY`: Your Claude API key (if using Anthropic Claude)
+   - Railway automatically provides the `PORT` environment variable
+
+3. **Deploy:**
+   - Railway will automatically build using the provided `Dockerfile`
+   - The app will be available at the generated Railway URL
+   - API docs will be available at `https://your-railway-url/docs`
+
+### Local Docker Build
+
+```bash
+# Build the image
+docker build -t jplens-aicontext .
+
+# Run the container
+docker run -p 8001:8001 -e AI_PROVIDER=openai -e OPENAI_API_KEY=your-key jplens-aicontext
+```
+
+## ⚡ **Optimization**
+
+This project is optimized for lightweight deployment:
+
+- **Separated dependencies**: `requirements-prod.txt` contains only production dependencies
+- **Multi-stage Docker build**: Reduces final image size by ~50%
+- **Minimal base image**: Uses `python:3.12-slim`
+- **Non-root user**: Runs as unprivileged user in production
+- **Health checks**: Built-in health monitoring
+- **Railway-optimized**: Automatic port detection and proper host binding
 
 ## API Endpoints
 
