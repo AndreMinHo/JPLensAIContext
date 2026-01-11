@@ -34,7 +34,7 @@ class Settings(BaseSettings):
     log_level: str = "INFO"
 
     # 🖥️ Server Configuration (local development defaults)
-    host: str = "127.0.0.1"
+    host: str = "localhost"
     port: int = int(os.getenv("PORT", 8001))  # Railway provides PORT env var
 
     class Config:
